@@ -3,6 +3,12 @@ Using SQL to answer business questions about pharmacy claims
 ## 📌 Overview
 ### Business needs
 
+The client is an insurance company with records of pharmacy claims from its members. Given a small set of pharmacy claims data, the client wish to have a test database setup, along with pre-program SQL queries for future analysis and reporting. 
+
+### Normalization 
+
+
+
 ## :label: Project outcomes
 <details>
 <summary>
