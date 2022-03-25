@@ -1,0 +1,146 @@
+DROP DATABASE IF EXISTS Pharmacy;
+CREATE DATABASE Pharmacy; 
+USE Pharmacy; 
+
+-- import member table using Wizard
+ALTER TABLE `dim_members`
+-- designate MEMBER_ID as natural key 
+MODIFY COLUMN MEMBER_ID VARCHAR(10) PRIMARY KEY,
+MODIFY COLUMN MEMBER_FIRST_NAME VARCHAR(20) DEFAULT NULL,
+MODIFY COLUMN MEMBER_LAST_NAME VARCHAR(20) DEFAULT NULL,
+MODIFY COLUMN MEMBER_BIRTH_DATE VARCHAR(50) DEFAULT NULL,
+MODIFY COLUMN MEMBER_GENDER VARCHAR(1) DEFAULT NULL;
+
+UPDATE `dim_members`
+SET MEMBER_BIRTH_DATE = STR_TO_DATE(MEMBER_BIRTH_DATE,'%m/%d/%Y');
+
+UPDATE dim_members SET MEMBER_BIRTH_DATE = '1946-06-14'
+    WHERE MEMBER_ID = 10001;
+
+UPDATE dim_members SET MEMBER_BIRTH_DATE = '1962-01-02'
+    WHERE MEMBER_ID = 10002;
+
+SELECT *
+FROM dim_members;
+
+-- import drugs table using Wizard
+ALTER TABLE `dim_drugs`
+-- -- designate DRUG_NDC as natural key 
+MODIFY COLUMN DRUG_NDC VARCHAR(20) PRIMARY KEY,
+MODIFY COLUMN DRUG_NAME VARCHAR(100) DEFAULT NULL;
+
+-- import drug form table using Wizard
+ALTER TABLE `dim_drug_form`
+-- designate DRUG_FROM_CODE as natural key 
+MODIFY COLUMN DRUG_FROM_CODE CHAR(10) PRIMARY KEY,
+MODIFY COLUMN DRUG_FROM_DESC VARCHAR(100) DEFAULT NULL;
+
+-- import drug brand generic table using Wizard
+ALTER TABLE `dim_drug_brand_generic`
+-- designate DRUG_BRAND_GENERIC_CODE as natural key 
+MODIFY COLUMN DRUG_BRAND_GENERIC_CODE VARCHAR(2) PRIMARY KEY,
+MODIFY COLUMN DRUG_BRAND_GENERIC_DESC VARCHAR(50) DEFAULT NULL;
+
+DROP TABLE IF EXISTS `fact_fill`;
+-- import fill table using Wizard
+ALTER TABLE `fact_fill`
+-- designate DRUG_BRAND_GENERIC_CODE as natural key 
+MODIFY COLUMN FILL_ID VARCHAR(10) PRIMARY KEY,
+MODIFY COLUMN FILL_DATE VARCHAR(50) DEFAULT NULL,
+MODIFY COLUMN COPAY_AMOUNT INT (5) DEFAULT NULL,
+MODIFY COLUMN INSURANCE_PAID INT (5) DEFAULT NULL,
+-- FK
+MODIFY COLUMN MEMBER_ID VARCHAR(10) DEFAULT NULL,
+ADD CONSTRAINT fk_MEMBER_ID
+FOREIGN KEY (MEMBER_ID) REFERENCES `dim_members`(MEMBER_ID) ON UPDATE CASCADE ON DELETE SET NULL,
+-- FK
+MODIFY COLUMN DRUG_NDC VARCHAR(20) DEFAULT NULL,
+ADD CONSTRAINT fk_DRUG_NDC
+FOREIGN KEY (DRUG_NDC) REFERENCES `dim_drugs`(DRUG_NDC) ON UPDATE CASCADE ON DELETE SET NULL,
+-- FK
+MODIFY COLUMN DRUG_FROM_CODE CHAR(10) DEFAULT NULL,
+ADD CONSTRAINT fk_DRUG_FROM_CODE
+FOREIGN KEY (DRUG_FROM_CODE) REFERENCES `dim_drug_form`(DRUG_FROM_CODE) ON UPDATE CASCADE ON DELETE SET NULL,
+-- FK
+MODIFY COLUMN DRUG_BRAND_GENERIC_CODE VARCHAR(2) DEFAULT NULL,
+ADD CONSTRAINT fk_DRUG_BRAND_GENERIC_CODE
+FOREIGN KEY (DRUG_BRAND_GENERIC_CODE) REFERENCES `dim_drug_brand_generic`(DRUG_BRAND_GENERIC_CODE) ON UPDATE CASCADE ON DELETE SET NULL;
+
+SELECT *
+FROM `fact_fill`;
+UPDATE `fact_fill`
+SET FILL_DATE = STR_TO_DATE(FILL_DATE,'%m/%d/%Y');
+
+SELECT *
+FROM `fact_fill`;
+
+-- Part 4a
+-- How many prescriptions were filled for the drug Ambien? 5
+SELECT COUNT(`fact_fill`.`DRUG_NDC`), DRUG_NAME
+FROM dim_drugs
+LEFT JOIN fact_fill ON `dim_drugs`.`DRUG_NDC` = `fact_fill`.`DRUG_NDC`
+GROUP BY DRUG_NAME;
+
+-- Part 4b
+DROP TABLE IF EXISTS Q4b_V1;
+CREATE TABLE Q4b_V1 AS
+SELECT fact_fill.member_id,TIMESTAMPDIFF(YEAR, MEMBER_BIRTH_DATE, CURDATE()) AS age, COUNT(fill_id) AS num_fill, sum(copay_amount) AS total_copay, sum(insurance_paid) AS total_insurance_paid, member_birth_date AS bday
+FROM fact_fill 
+LEFT JOIN dim_members ON fact_fill.member_id = dim_members.member_id
+WHERE TIMESTAMPDIFF(YEAR, MEMBER_BIRTH_DATE, CURDATE()) < 65 OR TIMESTAMPDIFF(YEAR, MEMBER_BIRTH_DATE, CURDATE()) > 65
+GROUP BY fact_fill.member_id;
+
+SELECT *
+FROM Q4b_V1;
+
+SELECT * 
+FROM dim_members;
+
+SELECT CASE when year(bday) < 1980 then '65+'
+when year (bday) > 1980 then '65-'
+end as members_age_group, SUM(num_fill), SUM(total_copay), SUM(total_insurance_paid), COUNT(DISTINCT member_id) 
+FROM Q4b_V1
+GROUP BY members_age_group;
+
+-- Part 4c
+DROP TABLE IF EXISTS Q4c_V1;
+CREATE TABLE Q4c_V1 AS
+SELECT fill_date,drug_name, insurance_paid, member_id
+FROM dim_drugs
+LEFT JOIN fact_fill ON dim_drugs.drug_ndc = fact_fill.drug_ndc;
+
+SELECT *
+FROM Q4c_V1;
+
+DROP TABLE IF EXISTS Q4c_V2;
+CREATE TABLE Q4c_V2 AS
+SELECT `dim_members`.`MEMBER_ID`, member_first_name, member_last_name, drug_name, fill_date, insurance_paid
+FROM Q4c_V1
+LEFT JOIN dim_members ON `dim_members`.`MEMBER_ID`= Q4c_V1.member_id
+ORDER BY member_id, fill_date DESC;
+
+DROP TABLE IF EXISTS Q4c_V3;
+CREATE TABLE Q4c_V3 AS
+SELECT *, ROW_NUMBER() OVER(PARTITION BY member_id ORDER BY member_id, fill_date DESC) AS FLAG
+FROM Q4c_V2;
+
+SELECT * 
+FROM Q4c_V3;
+
+DROP TABLE IF EXISTS Q4c_V4;
+CREATE TABLE Q4c_V4 AS
+SELECT * 
+FROM Q4c_V3 
+WHERE FLAG = 1;
+
+ALTER TABLE Q4c_V4 DROP FLAG;
+
+SELECT *
+FROM Q4c_V4;
+
+
+
+
+
+
+
