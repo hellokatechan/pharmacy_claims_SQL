@@ -3,9 +3,17 @@ Using SQL to answer business questions about pharmacy claims
 ## 📌 Overview
 ### Business needs
 
-The client is an insurance company with records of pharmacy claims from its members. Given a small set of pharmacy claims data, the client wish to have a test database setup, along with pre-program SQL queries for future analysis and reporting. 
+The client is an insurance company interested in setting up a test database before rolling out the data wareshouse goes live in production , along with pre-program along with pre-program SQL queries for future analysis and reporting. The developer is given a small sample dataset containing a list of records of pharmacy claims.(see photo below)
 
 ### Normalization 
+
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/raw_data.png>
+
+The raw sample dataset was in its zero normal form because there were multiple entitles/tables nested under one sheet. Each row represents a pharmacy claim transaction containing a patient's name, medication filled and billing information. To normalize the dataset from zero normal form to 1NF, I looked for immediate entities, tables and keys in the raw dataset.
+
+<img width="573" alt="dataset normalization" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/data_org.png>
+
+Entities often lead to tables, which I then assigned each attribute under a table. Each table should have a unique identifier column, which serves as a primary key for each table. All tables have a primary key except for the FILL fact table - I created FILL_ID as the primary key.  
 
 
 
