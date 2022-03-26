@@ -3,17 +3,22 @@ Using SQL to answer business questions about pharmacy claims
 ## 📌 Overview
 ### Business needs
 
-The client is an insurance company interested in setting up a test database before rolling out the data wareshouse goes live in production , along with pre-program along with pre-program SQL queries for future analysis and reporting. The developer is given a small sample dataset containing a list of records of pharmacy claims.(see photo below)
+The client is an insurance company interested in setting up a test database before rolling out the data wareshouse goes live in production , along with pre-program along with pre-program SQL queries for future analysis and reporting. The developer is given a small sample dataset containing a list of records of pharmacy claims.(see photo below - click to expand image)
 
 ### Normalization 
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/raw_data.png>
 
-The raw sample dataset was in its zero normal form because there were multiple entitles/tables nested under one sheet. Each row represents a pharmacy claim transaction containing a patient's name, medication filled and billing information. To normalize the dataset from zero normal form to 1NF, I looked for immediate entities, tables and keys in the raw dataset.
+The raw sample dataset was in its zero normal form because there were multiple entitles/tables nested under one sheet. Each row represents a pharmacy claim transaction containing the name of the patient, the name of the medication filled and billing information. To normalize the dataset from zero normal form to 1NF, I looked for immediate entities, table and keys.
 
 <img width="573" alt="dataset normalization" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/data_org.png>
 
-Entities often lead to tables, which I then assigned each attribute under a table. Each table should have a unique identifier column, which serves as a primary key for each table. All tables have a primary key except for the FILL fact table - I created FILL_ID as the primary key.  
+An entity is can be thought of the logical aspect of the database where as a table is the physical ascept of the database. A table represents a part of the business function that also links to different part of the organization. The four immediate entities that jump out were members, drugs, copays and insurance paid. I then assigned each attribute from the raw dataset to an entity (i.e. memeber_id would be under the member table). 
+
+The last component for the database to be in its 1NF are primary and foriegn key. To be a primary key, it must contain an unique identifer for each traanctional row. Below are the immediate attributes that qualify to be the unique identify for its table: 
+
+1. Member_id is unique for each patient
+2.  IWhat's I haEach table should have a unique identifier column, which serves as a primary key for each table. All tables have a primary key except for the FILL fact table - I created FILL_ID as the primary key.  
 
 
 
