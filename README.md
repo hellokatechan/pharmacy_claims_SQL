@@ -35,21 +35,30 @@ After the transformation, each table was in its 3NF. There were no hidden entiti
 
 The grain of the fill table is that each row in the transaction fact table represents a record of prescription fill.
 
-COPAY_AMOUNT and INSURANCE_PAID are facts while FILL_DATE is a dimension. COPAY_AMOUNT is an additive fact because it make sense to add them up with the FILL_DATE dimension (what is the total copay amount for all the dates?). INSURANCE_PAID is also an additive fact because we can find useful information if we were to add up insurance paid for all the dates or selective dates.
+COPAY_AMOUNT and INSURANCE_PAID are facts, while FILL_DATE is a dimension. COPAY_AMOUNT is an additive fact because I can add them up with the FILL_DATE dimension (what is the total copay amount for all the dates?). INSURANCE_PAID is also an additive fact because I can add up insurance paid for all the dates or selected dates.
 
 <img width="573" alt="star schema" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/star_scheme.png>
 
 ### Foreign keys, CASCADE, SET NULL or RESTRICT 
 
-The image above shows an ERD in the form of a star schema. Much like a star structure, the fill table is the center piece and it connects to rest of the tables and vice versa with foriegn keys. Each foreign key acts as a connector between the tables where the each foreign key is the primary key in the dimension table. 
-All four foreign keys resides in the fill table: MEMBER_ID, DRUG_NDC, DRUG_FROM_COD and EDRUG_BRAND_GENERIC_CODE.
+The image above shows an ERD in the form of a star schema. Much like a star structure, the fill table is the centerpiece where it connects to the rest of the tables and vice versa with foreign keys. Each foreign key acts as a connector between the tables, where each foreign key is the primary key in the dimension table. 
+All four foreign keys reside in the fill table: MEMBER_ID, DRUG_NDC, DRUG_FROM_COD, and EDRUG_BRAND_GENERIC_CODE.
 
-* MEMBER_ID is a foreign key in fill table because I’d like to know for the prescription filled, whose prescription it belongs to. 
+* MEMBER_ID is a foreign key infill table because I’d like to know whose drug it belongs to for the prescription filled. 
 * DRUG_NDC is a foreign key in the fill table because I can refer the NDC number to know which medication is filled. 
-* DRUG_FORM_CODE is a foreign key in the fill table because I can refer the code and know what form the medication is in. 
+* DRUG_FORM_CODE is a foreign key in the fill table because I can refer to the code and know the medication's form. 
 * DRUG_BRAND_GENERIC_CODE is a foreign key in the FILL table because I can refer to the DRUG_BRAND_GENERIC_CODE table to know if the medication filled is a brand name or generic name.
 
-CASCADE, SET NULL and RESTRICT is a set of options on how to deal with changes when there is an update or deletion in the parent table. CASCADE is used when you want to roll over the change in the child table when there is an update or deletion in the parent table. SET NULL means that where there's an update or deletion in the parent table, the child table will change the values to NULL. The most restrict kind would be the RESTRICT where no change would happen in the child table if there’s an update or deletion in the parent table.
+CASCADE, SET NULL, and RESTRICT are options for dealing with changes when there is an update or deletion in the parent table. CASCADE is used when you want to roll over the changes in the child table when there is an update or deletion in the parent table. SET NULL means that where there's an update or deletion in the parent table, the child table will change the values to NULL. The most restricted kind would be the RESTRICT, where no change would happen in the child table if there’s an update or deletion in the parent table.
+
+Before deciding which option to go with for each foreign key, it is essential to determine which lowly changing dimensions(Type 0,1,2 and 3) to go with for the database. Type 2 is appropriate for the business use case because I don't want to overwrite any changes in the dimension table. Instead, a new row is created to capture the latest information while preserving the historical record. For example, if there's a change in drug form, I would like to keep the history of the fill transaction. 
+
+Now that I know how to deal with information changes in the dimension tables, CASCADE is the option that best matches Type 2 for all foreign keys. 
+
+
+
+
+
 
 
 
