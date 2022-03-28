@@ -37,8 +37,19 @@ The grain of the fill table is that each row in the transaction fact table repre
 
 COPAY_AMOUNT and INSURANCE_PAID are facts while FILL_DATE is a dimension. COPAY_AMOUNT is an additive fact because it make sense to add them up with the FILL_DATE dimension (what is the total copay amount for all the dates?). INSURANCE_PAID is also an additive fact because we can find useful information if we were to add up insurance paid for all the dates or selective dates.
 
-### Foreign key set up 
+<img width="573" alt="star schema" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/star_scheme.png>
 
+### Foreign keys, CASCADE, SET NULL or RESTRICT 
+
+The image above shows an ERD in the form of a star schema. Much like a star structure, the fill table is the center piece and it connects to rest of the tables and vice versa with foriegn keys. Each foreign key acts as a connector between the tables where the each foreign key is the primary key in the dimension table. 
+All four foreign keys resides in the fill table: MEMBER_ID, DRUG_NDC, DRUG_FROM_COD and EDRUG_BRAND_GENERIC_CODE.
+
+* MEMBER_ID is a foreign key in fill table because I’d like to know for the prescription filled, whose prescription it belongs to. 
+* DRUG_NDC is a foreign key in the fill table because I can refer the NDC number to know which medication is filled. 
+* DRUG_FORM_CODE is a foreign key in the fill table because I can refer the code and know what form the medication is in. 
+* DRUG_BRAND_GENERIC_CODE is a foreign key in the FILL table because I can refer to the DRUG_BRAND_GENERIC_CODE table to know if the medication filled is a brand name or generic name.
+
+CASCADE, SET NULL and RESTRICT is a set of options on how to deal with changes when there is an update or deletion in the parent table. CASCADE is used when you want to roll over the change in the child table when there is an update or deletion in the parent table. SET NULL means that where there's an update or deletion in the parent table, the child table will change the values to NULL. The most restrict kind would be the RESTRICT where no change would happen in the child table if there’s an update or deletion in the parent table.
 
 
 
