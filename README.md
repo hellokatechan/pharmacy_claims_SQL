@@ -151,6 +151,11 @@ The final output of the query shows a list of the latest prescription fill per m
 
 <img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans4.png> 
 
+### What's next?
+Each insurance product/plan has a different cap on maximum out of pocket for its member per year. Copay is considered out of pocket and the amount will be deducted of the member maxium out of pocket amount. The client would like to know of their list of insurance product/plan, which one plan has the highest average total out of pocket amount?   
+
+
+
 ## :label: Project outcomes
 <details>
 <summary>
