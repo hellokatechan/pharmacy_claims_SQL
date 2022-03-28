@@ -55,7 +55,22 @@ Before deciding which option to go with for each foreign key, it is essential to
 
 Now that I know how to deal with information changes in the dimension tables, CASCADE is the option that best matches Type 2 for all foreign keys. 
 
+### Sample queries
+The client is interested in having a few sample queries ready before the database goes live. Below are some commonly asked questions from across different business function. 
 
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/num_rx.png>
+
+Above is a SQL query that answers * how many prescriptions were filled for the drug Ambien? *
+I started off by looking for tables that would contain information - fill table and the drugs table. I will need the name of the medication along with the number of times that a particular medication are filled. 
+
+The drugs table left join the fact table on drug_ndc would result in a larger table with all the infomration need to answer the business question. The COUNT function would the number of a particular medication are filled, and the result will show the total number of a particular medicationa are filled bucketed under each unqiue medication.
+
+The query can expand by adding an additional filter such as timeframe. For example, * how many prescriptions were filled for the drug Ambien after year 2017-01-01 * In which case, I would add the following WHERE clause to the query: 
+
+```
+WHERE fill_date > 2017-01-01
+
+```
 
 
 
