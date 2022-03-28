@@ -61,7 +61,7 @@ The client is interested in having a few sample queries ready before the databas
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/num_rx.png>
 
-Above is a SQL query that answers * how many prescriptions were filled for the drug Ambien? * - Answer: 5. 
+Above is a SQL query that answers *how many prescriptions were filled for the drug Ambien?* - Answer: 5. 
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/num_rx_ans.png> 
 
@@ -80,7 +80,7 @@ GROUP BY DRUG_NAME;
 
 ```
 #### 2 
-The following SQL query is set up to questions like * how many unique members are over 65 years of age?* and * how many prescription did they fill?*
+The following SQL query is set up to questions like *how many unique members are over 65 years of age? Answer: 2* and *how many prescription did they fill? Answer: 7*
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/case_logic.png>
 
