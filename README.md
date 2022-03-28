@@ -56,26 +56,57 @@ Before deciding which option to go with for each foreign key, it is essential to
 Now that I know how to deal with information changes in the dimension tables, CASCADE is the option that best matches Type 2 for all foreign keys. 
 
 ### Sample queries
+#### 1
 The client is interested in having a few sample queries ready before the database goes live. Below are some commonly asked questions from across different business function. 
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/num_rx.png>
 
-Above is a SQL query that answers * how many prescriptions were filled for the drug Ambien? *
-I started off by looking for tables that would contain information - fill table and the drugs table. I will need the name of the medication along with the number of times that a particular medication are filled. 
+Above is a SQL query that answers * how many prescriptions were filled for the drug Ambien? * - Answer: 5. 
 
-The drugs table left join the fact table on drug_ndc would result in a larger table with all the infomration need to answer the business question. The COUNT function would the number of a particular medication are filled, and the result will show the total number of a particular medicationa are filled bucketed under each unqiue medication.
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/num_rx_ans.png> 
 
-The query can expand by adding an additional filter such as timeframe. For example, * how many prescriptions were filled for the drug Ambien after year 2017-01-01 * In which case, I would add the following WHERE clause to the query: 
+I started by looking at the tables that contained the information. I would need the name of the medication and prescription transaction The fact table and drug table contain the information I need to answer the business question. 
+
+The drugs table left join the fact table on drug_ndc would result in a larger table with all the information needed to answer the business question. The COUNT and GROUP BY function would show the total number of a particular medication filled.
+
+I can also further refine the filter by adding the WHERE clause. For example, *how many prescriptions were filled for the drug Ambien after 2017-01-01?* In which case, I would add the following WHERE clause to the query: 
 
 ```
+SELECT COUNT(`fact_fill`.`DRUG_NDC`), DRUG_NAME
+FROM dim_drugs
+LEFT JOIN fact_fill ON `dim_drugs`.`DRUG_NDC` = `fact_fill`.`DRUG_NDC`
 WHERE fill_date > 2017-01-01
+GROUP BY DRUG_NAME;
 
 ```
+#### 2 
+The following SQL query is set up to questions like * how many unique members are over 65 years of age?* and * how many prescription did they fill?*
 
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/case_logic.png>
 
+From the SELECT statement, I listed out all the attributes that I wanted to see from the query output: 
+* member_id
+* age
+* the total number of prescription filled
+* the total amount of copay
+* the total amount of insurance paid 
+* day of birth 
 
+I then look for the tables that contain the information I listed above - fact table and members table. The fact table left join the members table on member_id, resulting in a larger table with all the information I need in the output.  
 
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/case_logic_ans.png>
 
+Next, I used the CASE statement to group the members by their age into two buckets - 65+ or 65-. 
+
+Case statement is equivalent to if...then..else statement. In SQL it is in the form of case...then...else, which translates to case year is less than 1980 then 65+ and when case year is greater than 1980 then 65-.I nested the CASE statement under the SELECT in the form of subquery. The output of the subquery would already assign the memebers into one of the two buckets. 
+
+Once all the members is assigned to their age group category, I add the rest of the information I want in the SELECT statement:
+
+* total number of prescription filled
+* total amount of copay
+* total amount of insurance paid 
+
+The query ends with a GROUP BY, which would bucket all the output by age group category. 
 
 ## :label: Project outcomes
 <details>
