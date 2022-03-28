@@ -3,7 +3,7 @@ Using SQL to answer business questions about pharmacy claims
 ## 📌 Overview
 ### Business needs
 
-The client is an insurance company interested in setting up a test database before rolling out the data wareshouse goes live in production , along with pre-program along with pre-program SQL queries for future analysis and reporting. The developer is given a small sample dataset containing a list of records of pharmacy claims.(see photo below - click to expand image)
+The client is an insurance company interested in setting up a test database before the data wareshouse goes live in production , along with pre-program along with pre-program SQL queries for future analysis and reportings. The developer is given a small sample dataset containing a list of pharmacy claims records.(see photo below - click to expand image)
 
 ### Normalization 
 
@@ -14,19 +14,23 @@ The raw sample dataset was in its zero normal form because there were multiple e
 <img width="573" alt="dataset normalization" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/data_org.png>
 
 #### 1NF
-An entity is can be thought of the logical aspect of the database where as a table is the physical ascept of the database. A table represents a part of the business function that also links to different part of the organization. The four immediate entities that jump out were members, drugs, copays and insurance paid. I then assigned each attribute from the raw dataset to an entity (i.e. memeber_id would be under the member table). 
+An entity is can be thought of the logical aspect of the database where as a table is the physical ascept of the database. A table represents a part of the business function that also links to different part of the organization. The four immediate entities that jump out were members, drugs, copays and insurance paid. I then assigned each attribute from the raw dataset to one of the four entities (i.e. memeber_id would be under the member table). 
 
 The last component for the database to be in its 1NF are primary and foriegn key. To be a primary key, it must contain an unique identifer for each transactional row. Below are the immediate attributes that qualify to be the unique identify for its table: 
 
 1. Member_id is an unique identifer for each patient under the member table
 2. Drug_NDC is an unique identifer for each medication under the drug table
 3. Drug_form_code is an unique identifer for each drug form under the drug table 
-4. Drug_brand_generic_code is an unique identifer for drug brand under the drug table 
+4. Drug_brand_generic_code is an unique identifer for drug brand form under the drug table 
 
 A total of two primary keys emerged under the drug table, which I then broke it up into two new tables - drug_form and drug_brand_generic_code. Lastly, 
-I created a new table called fill table that contains billing information such as copays and insurance paid with fill_id as the primary key.
+I created a new table called fill table that contains billing information such as copays and insurance paid with fill_id as the primary key. 
 
-#### 2NF 
+#### 2NF and 3NF
+After the transformation, each table was in its 3NF. There were no hidden entities in the form of composite keys, no functional depencies and lastly all attribute depend on its primary key. 
+
+### Fact table - fill table 
+
 
 
 
