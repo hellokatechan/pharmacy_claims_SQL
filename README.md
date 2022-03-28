@@ -105,8 +105,39 @@ Once all the members is assigned to their age group category, I add the rest of 
 * total number of prescription filled
 * total amount of copay
 * total amount of insurance paid 
+* total number of unique members by age group
 
 The query ends with a GROUP BY, which would bucket all the output by age group category. 
+
+<img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/case_logic_ans2.png>
+
+#### 3
+
+The following SQL query is set up to questions like *For member ID 10003, what was the drug name listed on their most recent fill date? Answer: Ambien* and *how much did their insurance pay for the medication? Answer: $322*
+
+To reduce confusion, I created multiple tables. 
+
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_1.png> 
+
+The first table, Q4c_V1, is a left join between drugs and fact table. The table ouput shows fill_date, drug_name, insurance_paid, and member_id. 
+
+<img width="573" alt="output" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans1.png>
+
+The missing information such as member_first_name and member_last_name would lead a new table with a left join between Q4c_V1 and the member table. 
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_2.png>
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans2.png>
+
+The output of the new table Q4c_V2 contain all the information needed to answer the business questions listed above. To identify the latest fill transaction per member, I used the Flag to mark the latest prescription fill. 
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_3.png>
+     
+```
+SELECT *, ROW_NUMBER() OVER(PARTITION BY member_id ORDER BY member_id, fill_date DESC) AS FLAG
+```
+
 
 ## :label: Project outcomes
 <details>
