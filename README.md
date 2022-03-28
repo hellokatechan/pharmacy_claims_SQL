@@ -14,22 +14,22 @@ The raw sample dataset was in its zero normal form because there were multiple e
 <img width="573" alt="dataset normalization" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/data_org.png>
 
 #### 1NF and primary key set up 
-An entity is can be thought of the logical aspect of the database where as a table is the physical ascept of the database. A table represents a part of the business function that also links to different part of the organization. The four immediate entities that jump out were members, drugs, copays and insurance paid. I then assigned each attribute from the raw dataset to one of the four entities (i.e. memeber_id would be under the member table). 
+An entity is the logical aspect of the database, whereas a table is the physical aspect of the database. A table represents a part of the business function that links to a different part of the organization. The four immediate entities that jumped out were members, drugs, copays, and insurance. I then assigned each attribute from the raw dataset to one of the four entities (i.e., memeber_id would be under the member table). 
 
-The last component for the database to be in its 1NF are primary and foriegn key. To be a primary key, it must contain an unique identifer for each transactional row. Below are the immediate attributes that qualify to be the unique identify or primary key for its table: 
+The last component for the database in its 1NF is the primary and foreign keys. Each transactional row must contain a unique identifier. Below are the immediate attributes that qualify to be the unique identifier or primary key for its table: 
 
 1. Member_id is the primary key for each patient under the member table. In this example, the primary key is a natural key because the unique identifier was already there in the raw dataset.
 2. Drug_NDC is the primary key for each medication under the drug table. In this example, the primary key is a natural key because the unique identifier was already there in the raw dataset.
 3. Drug_form_code is the primary key for each drug form under the drug table. In this example, the primary key is a natural key because the unique identifier was already there in the raw dataset.
 4. Drug_brand_generic_code is the primary key for drug brand form under the drug table. In this example, the primary key is a natural key because the unique identifier was already there in the raw dataset.
 
-A total of two primary keys emerged under the drug table. To reach 2NF there shouldn't be any hidden entities,for that,I broke the drug table into two new tables - drug_form and drug_brand_generic_code. 
+A total of two primary keys emerged under the drug table. For each table to be in its 2NF, there shouldn't be any hidden entities. I broke the drug table into two new tables - drug_form and drug_brand_generic_code. 
 
-Lastly, I created a new table called fill which contains billing information such as copays and insurance paid with fill_id as the primary key. 
-In this example, the primary key is a surrogate key because I had to make up an unique identifier for the table. The FILL_ID don’t have any business meaning making FILL_ID as a surrogate key.
+Lastly, I created a new fill table, which contains billing information such as copays and insurance paid with fill_id as the primary key. 
+In this example, the primary key is a surrogate key because I had to make up a unique identifier for the table. The FILL_ID doesn't have any business, so FILL_ID is a surrogate key.
 
 #### 2NF and 3NF
-After the transformation, each table was in its 3NF. There were no hidden entities in the form of composite keys, no functional depencies and lastly all attribute depend on its primary key. 
+After the transformation, each table was in its 3NF. There were no hidden entities, no functional dependencies, and attributes depending on its primary key.
 
 #### Fact table (i.e. fill table)
 
