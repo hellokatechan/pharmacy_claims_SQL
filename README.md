@@ -130,14 +130,26 @@ The missing information such as member_first_name and member_last_name would lea
 
 <img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans2.png>
 
-The output of the new table Q4c_V2 contain all the information needed to answer the business questions listed above. To identify the latest fill transaction per member, I used the Flag to mark the latest prescription fill. 
+The output of the new table Q4c_V2 contain all the information needed to answer the business questions listed above. The next few steps were to refine the query so that I can identify the latest fill transaction per member.
 
 <img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_3.png>
+
+The output of this query should contain all the attributes listed in the previous tables, which is why I used * in the SELECT statement. I also all a new field called FLAG using 
      
 ```
 SELECT *, ROW_NUMBER() OVER(PARTITION BY member_id ORDER BY member_id, fill_date DESC) AS FLAG
 ```
+PARTITION BY allows me to bucket all the members by its member_id, and within each bucket, order the fill_date in its descending order, latest date on top. The latest prescription fill will be labeled as 1 and so on. 
 
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans3.png>
+
+The idea behind FLAG is so that I can use the WHERE clause to filter out latest prescription fill per member. 
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_4.png>
+
+The final output of the query shows a list of the latest prescription fill per member. 
+
+<img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans4.png> 
 
 ## :label: Project outcomes
 <details>
