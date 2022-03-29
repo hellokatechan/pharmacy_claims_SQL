@@ -152,13 +152,13 @@ The final output of the query shows a list of the latest prescription fill per m
 <img width="573" alt="table" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/lead_lag_ans4.png> 
 
 ### What's next?
-Each insurance product has a different cap on maximum out of pocket per year. Members can deduct their copay from the maxiumum out of pocket amount. Once members have reached the maxiumum out of pocket amount, the insurance would pay all medication cost. The client would like to add the additional information about insurance products and its maximum out of pocket amount. 
+Each insurance product has a different cap on maximum out of pocket per year. Members can deduct their copay from the maximum out of pocket amount. Once members have reached the maximum out of pocket amount, the insurance would pay all medication cost. The client would like to add the additional information about insurance products and its maximum out of pocket amount.
 
-For this business usecase, I would add a new table called insurance where it contains the following attributes: 
+For this business use case, I would add a new table called insurance where it contains the following attributes:
 * insurance_product_id as the primary key and foreign key in the fill table
 * max_amount 
 
-Fill table can left join insurance table on insurance_product_id and find out how much copays a member have paid so far compared to her miximum out of pocket amount. It would also be interesting to find out which members tend to reach their maxiumum out of pocket amount - helpful for the financial department to budget. 
+Fill table can left join insurance table on insurance_product_id and find out how much copays a member have paid so far compared to her maximum out of pocket amount. It would also be interesting to find out which members tend to reach their maximum out of pocket amount - helpful for the financial department to budget.
 
 
 ## :label: Project outcomes
