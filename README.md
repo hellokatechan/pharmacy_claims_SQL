@@ -80,14 +80,14 @@ GROUP BY DRUG_NAME;
 
 ```
 #### 2 
-The following SQL query is set up to questions like *how many unique members are over 65 years of age? Answer: 2* and *how many prescription did they fill? Answer: 7*
+The following SQL query is set up to questions like *how many unique members are over 65 years of age? Answer: 2* and *how many prescriptions did they fill? Answer: 7*
 
 <img width="573" alt="raw dataset" src=https://raw.githubusercontent.com/hellokatechan/pharmacy_claims_SQL/main/MARKDOWNS/case_logic.png>
 
 From the SELECT statement, I listed out all the attributes that I wanted to see from the query output: 
 * member_id
 * age
-* the total number of prescription filled
+* the total number of prescriptions filled
 * the total amount of copay
 * the total amount of insurance paid 
 * day of birth 
@@ -102,7 +102,7 @@ Case statement is equivalent to if...then..else statement. In SQL it is in the f
 
 Once all the members is assigned to their age group category, I add the rest of the information I want in the SELECT statement:
 
-* total number of prescription filled
+* total number of prescriptions filled
 * total amount of copay
 * total amount of insurance paid 
 * total number of unique members by age group
